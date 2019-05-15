@@ -4,6 +4,7 @@
   "description": "bu arac, binancete otomatik olarak yeni para listeleri satın almanızı ve satmanıızı saglar",
   "main": "main.js",
   "scripts": {
+    "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
