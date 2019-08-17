@@ -20,28 +20,39 @@ var sat_coin = {
 var vr_yuksel,vr_dus;
 var vr_coinmcap = {};
 
-//Get All Symbols onload
+//get symbols onload
 var ourRequestx = new XMLHttpRequest();
 ourRequestx.open('GET','https://api.binance.com/api/v3/ticker/price',true);
 ourRequestx.onload = function(){
-    var gv_sym_l = {};
+    var vr_sym_l = {};
     ourDatax = JSON.parse(ourRequestx.responseText);
     for(k=0;k<ourDatax.length;k++){
         //Update Symbol Pairs
-        gv_sympairs[ourDatax[k]["symbol"]] = ourDatax[k]["price"];
+        vr_sympairs[ourDatax[k]["symbol"]] = ourDatax[k]["price"];
         
         //Update and Check for new symbols
         if(ourDatax[k]["symbol"].substr(ourDatax[k]["symbol"].length - 4, ourDatax[k]["symbol"].length) == 'USDT'){
-            if(!gv_sym_l[ourDatax[k]["symbol"].substr(0,ourDatax[k]["symbol"].length - 4)]){
-               gv_sym_l[ourDatax[k]["symbol"].substr(0,ourDatax[k]["symbol"].length - 4)] = '1';
+            if(!vr_sym_l[ourDatax[k]["symbol"].substr(0,ourDatax[k]["symbol"].length - 4)]){
+               vr_sym_l[ourDatax[k]["symbol"].substr(0,ourDatax[k]["symbol"].length - 4)] = '1';
                }
         }
         else{
-            if(!gv_sym_l[ourDatax[k]["symbol"].substr(0,ourDatax[k]["symbol"].length - 3)]){
-               gv_sym_l[ourDatax[k]["symbol"].substr(0,ourDatax[k]["symbol"].length - 3)] = '1';
+            if(!vr_sym_l[ourDatax[k]["symbol"].substr(0,ourDatax[k]["symbol"].length - 3)]){
+               vr_sym_l[ourDatax[k]["symbol"].substr(0,ourDatax[k]["symbol"].length - 3)] = '1';
                }
         }
     }
-    gv_sym = gv_sym_l;
+    vr_sym = vr_sym_l;
 }
 ourRequestx.send();
+
+//get sıra(ranks) CoinMarketCapten
+var ourRequestc = new XMLHttpRequest();
+ourRequestc.open('GET',"https://api.coinmarketcap.com/v1/ticker/?limit=2000",true);
+ourRequestc.onload = function(){
+     ourDatac = JSON.parse(ourRequestc.responseText);
+     for(y=0;y<ourDatac.length;y++){
+         vr_coinmcap[ourDatac[y]["symbol"]] = ourDatac[y]["rank"];
+     }
+}
+ourRequestc.send();
